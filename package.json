@@ -1,0 +1,38 @@
+{
+  "name": "@kalcodes/ethiopian-calendar",
+  "version": "1.0.0",
+  "description": "Simple ethiopian ⟵⟶ gregorian calendar converter.",
+  "main": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "test": "pnpm run build && node --test",
+    "types:check": "tsc --noEmit",
+    "prepack": "pnpm run build"
+  },
+  "keywords": [
+    "Ethiopian",
+    "Calendar",
+    "Simple",
+    "converter",
+    "kalcodes"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.9.0",
+      "onFail": "download"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
+  }
+}

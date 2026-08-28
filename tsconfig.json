@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true,
+
+    "rootDir": "./src/",
+    "outDir": "./dist/"
+  },
+  "include": ["./src/"]
+}
