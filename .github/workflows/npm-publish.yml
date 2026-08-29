@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      NODE_AUTH_TOKEN: ${{secrets.npm_token}}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -19,11 +21,11 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
       - run: npm install -g pnpm
+      - name: Install build dependancies
+        run: pnpm install
       - name: Run tests
         run: pnpm run types:check && pnpm run test
       - name: Build package
         run: pnpm run build
       - name: Stage package publish
         run: pnpm stage publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
