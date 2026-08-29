@@ -8,17 +8,22 @@ on:
     types: [created]
 
 jobs:
-  publish-npm:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org/
-      - run: pnpm install
-      - run: pnpm run types:check && pnpm run test
-      - run: pnpm build
-      - run: pnpm stage publish
+      - run: npm install -g pnpm
+      - name: Run tests
+        run: pnpm run types:check && pnpm run test
+      - name: Build package
+        run: pnpm run build
+      - name: Stage package publish
+        run: pnpm stage publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
