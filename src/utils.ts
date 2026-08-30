@@ -1,14 +1,15 @@
-export type SimpleDate = { year: number; month: number; day: number };
+type Separator = "-" | "/";
+type SimpleDate = { year: number; month: number; day: number };
 
-export function isEthLeapYear(year: number) {
+function isEthLeapYear(year: number) {
   return year % 4 === 0;
 }
 
-export function isGregLeapYear(year: number) {
+function isGregLeapYear(year: number) {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
-export function isValidEthDate(date: SimpleDate): boolean {
+function isValidEthDate(date: SimpleDate): boolean {
   const { year, month, day } = date;
 
   if (day < 1 || day > 30) return false;
@@ -22,7 +23,7 @@ export function isValidEthDate(date: SimpleDate): boolean {
   return true;
 }
 
-export function isValidGregDate(date: SimpleDate): boolean {
+function isValidGregDate(date: SimpleDate): boolean {
   const { year, month, day } = date;
 
   if (month < 1 || month > 12) return false;
@@ -32,7 +33,37 @@ export function isValidGregDate(date: SimpleDate): boolean {
   return day <= daysInMonth[month - 1];
 }
 
-export function dateStr(date: SimpleDate, separator: string = "-") {
+function toDateString(date: SimpleDate, separator: Separator = "-") {
   const { year, month, day } = date;
   return `${year}${separator}${month}${separator}${day}`;
 }
+
+function toDateObject(
+  dateString: string,
+  separator: Separator = "-",
+): SimpleDate {
+  const pattern = new RegExp(`^\d+${separator}\d+${separator}\d+$`);
+
+  if (!dateString.match(pattern))
+    throw new Error(
+      `${dateString} doesn't seem to be a valid date string! \n` +
+        `Date String should year-month-day or year/month/day.`,
+    );
+
+  const [year, month, day] = dateString
+    .split(separator)
+    .map((item) => Number(item));
+
+  return { year, month, day };
+}
+
+export {
+  type SimpleDate,
+  type Separator,
+  toDateObject,
+  toDateString,
+  isEthLeapYear,
+  isGregLeapYear,
+  isValidEthDate,
+  isValidGregDate,
+};

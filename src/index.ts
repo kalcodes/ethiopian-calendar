@@ -1,19 +1,18 @@
 import {
-  dateStr,
   type SimpleDate,
+  toDateString,
   isValidEthDate,
   isValidGregDate,
-  isEthLeapYear,
-  isGregLeapYear,
 } from "./utils.js";
 
-const ETH_JDN_OFFSET = 1724221;
+const ETH_JDN_OFFSET = 1_724_221;
+const GREG_JDN_OFFSET = 1_721_426;
 
 function ethToJDN(date: SimpleDate): number {
   const { year, month, day } = date;
 
   if (!isValidEthDate(date))
-    throw new Error(`The date ${dateStr(date)} is invalid!`);
+    throw new Error(`The date ${toDateString(date)} is invalid!`);
 
   const leapDays = Math.floor((year - 1) / 4);
   const daysInYear = 30 * (month - 1) + (day - 1);
@@ -46,7 +45,7 @@ function gregToJDN(date: SimpleDate): number {
   const { year, month, day } = date;
 
   if (!isValidGregDate(date))
-    throw new Error(`The date ${dateStr(date)} is invalid!`);
+    throw new Error(`The date ${toDateString(date)} is invalid!`);
 
   const a = Math.floor((14 - month) / 12);
   const y = year + 4800 - a;
@@ -86,30 +85,26 @@ function jdnToGreg(jdn: number): {
 
 function gregToEth(date: SimpleDate): SimpleDate {
   if (!isValidGregDate(date))
-    throw new Error(`The date ${dateStr(date)} is invalid!`);
+    throw new Error(`The date ${toDateString(date)} is invalid!`);
 
   return jdnToEth(gregToJDN(date));
 }
 
 function ethToGreg(date: SimpleDate): SimpleDate {
   if (!isValidEthDate(date))
-    throw new Error(`The date ${dateStr(date)} is invalid!`);
+    throw new Error(`The date ${toDateString(date)} is invalid!`);
 
   return jdnToGreg(ethToJDN(date));
 }
 
 export {
-  type SimpleDate,
   ETH_JDN_OFFSET,
-  dateStr,
+  GREG_JDN_OFFSET,
   ethToJDN,
   jdnToEth,
   ethToGreg,
   gregToJDN,
   jdnToGreg,
   gregToEth,
-  isValidEthDate,
-  isValidGregDate,
-  isEthLeapYear,
-  isGregLeapYear,
+  type SimpleDate,
 };
