@@ -19,19 +19,13 @@ class BaseCalendar {
   month: number;
   day: number;
 
-  constructor(date: DateStr | DateObj | Date) {
-    if (date instanceof Date) {
-      this.year = date.getFullYear();
-      this.month = date.getMonth() + 1;
-      this.day = date.getDate();
-    } else {
-      if (typeof date === "string") {
-        date = this._parseDateString(date);
-      }
-      this.year = date.year;
-      this.month = date.month;
-      this.day = date.day;
+  constructor(date: DateStr | DateObj) {
+    if (typeof date === "string") {
+      date = this._parseDateString(date);
     }
+    this.year = date.year;
+    this.month = date.month;
+    this.day = date.day;
 
     // WARNING: Negative years may fail
     if (this.year < 1) {
@@ -75,7 +69,11 @@ class EthiopianCalendar extends BaseCalendar {
   static jdnOffset = 1_724_221 as const;
 
   constructor(date: DateStr | DateObj | Date) {
-    super(date);
+    if (date instanceof Date) {
+      super(new GregorianCalendar(date).toEthiopian());
+    } else {
+      super(date);
+    }
 
     // Validate input
     if (!this.isValid)
@@ -153,6 +151,13 @@ class GregorianCalendar extends BaseCalendar {
   static jdnOffset = 1_721_426 as const;
 
   constructor(date: DateStr | DateObj | Date) {
+    if (date instanceof Date) {
+      date = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate(),
+      };
+    }
     super(date);
 
     // Validate input
@@ -226,4 +231,4 @@ class GregorianCalendar extends BaseCalendar {
   }
 }
 
-export { EthiopianCalendar, GregorianCalendar };
+export { CalendarError, EthiopianCalendar, GregorianCalendar };
