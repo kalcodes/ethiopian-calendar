@@ -5,10 +5,6 @@
   "main": "dist/index.js",
   "type": "module",
   "author": "kalcodes",
-  "exports": {
-    ".": "./dist/index.js",
-    "./utils": "./dist/utils.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kalcodes/ethiopian-calendar.git"
@@ -32,13 +28,6 @@
     "prepack": "pnpm run build"
   },
   "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.9.0",
-      "onFail": "download"
-    }
-  },
   "devDependencies": {
     "@types/node": "^26.2.0",
     "typescript": "^7.0.2"
