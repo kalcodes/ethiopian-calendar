@@ -23,9 +23,9 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "npm run build && node --test",
+    "test": "pnpm run build && node --test",
     "types:check": "tsc --noEmit",
-    "prepack": "npm run build"
+    "prepack": "pnpm run build"
   },
   "license": "ISC",
   "devDependencies": {
