@@ -1,4 +1,7 @@
-type DateStr = `${number}-${number}-${number}`;
+type DateStr =
+  | `${number}-${number}-${number}`
+  | `${number}/${number}/${number}`;
+
 type DateObj = {
   year: number;
   month: number;
@@ -32,17 +35,18 @@ class BaseCalendar {
 
     // WARNING: Negative years may fail
     if (this.year < 1) {
-      console.warn("Proeleptic (negative) years are not supported currently!");
+      console.warn("Proeleptic (negative) years are not supported yet!");
     }
   }
 
-  _parseDateString(str: string): DateObj {
-    const pattern = new RegExp(`^\\d+-\\d+-\\d+$`);
+  _parseDateString(str: DateStr): DateObj {
+    const separator = str.includes("/") ? "/" : "-";
+    const pattern = new RegExp(`^\\d+${separator}\\d+${separator}\\d+$`);
 
     if (!str.match(pattern))
       throw new CalendarError(
         `${str} doesn't seem to be a valid date string! \n` +
-          `Date String should be of a form year-month-day.`,
+          `Date String must be of a form yy-mm-dd or yy/mm/dd.`,
       );
 
     const [year, month, day] = str.split("-").map((item) => Number(item));
@@ -169,7 +173,7 @@ class GregorianCalendar extends BaseCalendar {
     const feb = this.isLeapYear ? 29 : 28;
     const daysInMonth = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-    return this.day <= daysInMonth[this.month - 1];
+    return this.day >= 1 && this.day <= daysInMonth[this.month - 1];
   }
 
   toJDN() {
