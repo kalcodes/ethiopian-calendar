@@ -43,7 +43,7 @@ class BaseCalendar {
           `Date String must be of a form yy-mm-dd or yy/mm/dd.`,
       );
 
-    const [year, month, day] = str.split("-").map((item) => Number(item));
+    const [year, month, day] = str.split(separator).map((item) => Number(item));
 
     return { year, month, day };
   }
